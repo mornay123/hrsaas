@@ -12,7 +12,7 @@ export default {
   actions: {
     async loginAction({ commit }, res) {
       const data = await login(res) // 拦截器把请求回复信息解构了
-      console.log(data)
+      // console.log(data)
       commit('setToken', data)
     }
   }

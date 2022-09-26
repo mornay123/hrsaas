@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <svg-icon iconClass="example"></svg-icon>
+    <svg-icon icon-class="example" />
   </div>
 </template>
 
@@ -14,6 +14,9 @@ export default {
     ...mapGetters([
       'name'
     ])
+  },
+  created() {
+    this.$store.dispatch('user/getUserInfo')
   }
 }
 </script>

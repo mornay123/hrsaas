@@ -50,7 +50,7 @@ export default {
     return {
       passwordType: 'password',
       loginForm: {
-        mobile: '13800000002',
+        mobile: '13800000001',
         password: '123456'
       },
       rules: {
@@ -68,6 +68,7 @@ export default {
       loading: false
     }
   },
+
   methods: {
     showPwd() {
       this.passwordType === 'password' ? this.passwordType = '' : this.passwordType = 'password'

@@ -16,7 +16,7 @@ const store = new Vuex.Store({
   },
   getters,
   plugins: [createPersistedstate({
-    paths: ['user.token'] // 缓存模块或者模里面的字段
+    paths: ['user.token', 'user.hrsaasTime'] // 缓存模块或者模里面的字段
   })]
 })
 

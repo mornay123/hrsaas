@@ -3,7 +3,8 @@ export default {
   namespaced: true,
   state: {
     token: null,
-    userInfo: {}
+    userInfo: {},
+    hrsaasTime: 0
   },
   mutations: {
     setToken(state, token) {
@@ -14,6 +15,12 @@ export default {
     },
     removeUserInfo(state) {
       state.userInfo = {}
+    },
+    removeToken(state) {
+      state.token = null
+    },
+    setHesaasTime(state, hrsaasTime) {
+      state.hrsaasTime = hrsaasTime
     }
   },
   actions: {
@@ -21,6 +28,7 @@ export default {
       const data = await login(res) // 拦截器把请求回复信息解构了
       // console.log(data)
       commit('setToken', data)
+      commit('setHesaasTime', new Date().getTime())
     },
     async getUserInfo({ commit }) {
       const data = await getUserInfo()
@@ -28,6 +36,11 @@ export default {
       const result = { ...data, ...res1 }
       commit('setUserInfo', result)
       return JSON.parse(JSON.stringify(result))
+    },
+    logout({ commit }) {
+      // 退出登录清除token和用户信息
+      commit('removeUserInfo')
+      commit('removeToken')
     }
   }
 }

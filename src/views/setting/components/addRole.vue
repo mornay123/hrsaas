@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="新增角色"
+    :title="title"
     width="50%"
     :visible.sync="dialogVisible"
     :before-close="onClose"
@@ -28,7 +28,7 @@
   </el-dialog>
 </template>
 <script>
-import { addRole } from '@/api/setting'
+import { addRole, updateRole } from '@/api/setting'
 export default {
   props: {
     dialogVisible: {
@@ -45,19 +45,28 @@ export default {
       loading: false
     }
   },
+  computed: {
+    title() {
+      return this.roleForm.id ? '编辑角色' : '新增角色'
+    }
+  },
   methods: {
     onClose() {
       this.$emit('update:dialogVisible', false) // 关闭弹窗
       this.$refs.roleDialogForm.resetFields() // 重置表单
+      this.roleForm = {
+        name: '',
+        description: ''
+      }
     },
     async submit() {
       try {
         this.$refs.roleDialogForm.validate()
         // 接口
         this.loading = true // 加载控制，避免重复点击加载
-        await addRole(this.roleForm) // 添加数据到后台
+        this.roleForm.id ? await updateRole(this.roleForm) : await addRole(this.roleForm) // 添加数据到后台
         this.$emit('refreshList') // 渲染新列表
-        this.$message.success('角色新增成功') // 提示信息
+        this.$message.success(this.roleForm.id ? '角色编辑成功' : '角色新增成功') // 提示信息
         this.onClose() // 关闭弹窗,重置表单
       } catch (error) {
         console.log(error)

@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="280">
           <template slot-scope="{ row }">
-            <el-button type="text" size="small">查看</el-button>
+            <el-button type="text" size="small" @click="goDetail(row)">查看</el-button>
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
@@ -55,7 +55,7 @@
 import EmployeeEnum from '@/api/constant/employees'
 import PageTools from '@/components/pageTools'
 import { getEmployeeList, delEmployee } from '@/api/employees'
-import AddEmployee from './compennts/add-employee.vue'
+import AddEmployee from './components/add-employee.vue'
 export default {
   name: 'HrsaasIndex',
   components: {
@@ -139,12 +139,17 @@ export default {
       })
       await export_json_to_excel({
         header, // 表头 必填
+        multiHeader: [['手机号', '主要信息', '', '', '', '', '部门']],
+        merges: ['A1:A2', 'B1:F1', 'G1:G2'],
         data, // 具体数据 必填
         filename: '黑马人员列表', // 非必填
         autoWidth: true, // 非必填
         bookType: 'xlsx' // 非必填
       })
       // console.log(data)
+    },
+    goDetail(row) {
+      this.$router.push('/employees/detail/' + row.id)
     }
   }
 }

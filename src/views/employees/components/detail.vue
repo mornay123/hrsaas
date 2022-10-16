@@ -2,8 +2,8 @@
   <div class="dashboard-container">
     <div class="app-container">
       <el-card>
-        <el-tabs v-model="activeName" tab-click="tabClick">
-          <el-tab-pane label="登录账户设置" name="first">
+        <el-tabs v-model="activeName" @tab-click="tabClick">
+          <el-tab-pane lazy label="登录账户设置" name="first">
 
             <!-- 放置表单 -->
             <el-form ref="form" :model="accountInfo" :rules="rules" label-width="120px" style="margin-left: 120px; margin-top:30px">
@@ -18,8 +18,8 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="个人详情" name="second"><UserInfo /></el-tab-pane>
-          <el-tab-pane label="岗位信息" name="third"><JobInfo /></el-tab-pane>
+          <el-tab-pane lazy label="个人详情" name="second"><UserInfo /></el-tab-pane>
+          <el-tab-pane lazy label="岗位信息" name="third"><JobInfo /></el-tab-pane>
         </el-tabs>
       </el-card>
     </div>
@@ -30,7 +30,7 @@
 import { getUserDetailById, saveUserDetailById } from '@/api/user'
 import JobInfo from './job-info.vue'
 import UserInfo from './user-info.vue'
-import Cookie from 'js-cookie'
+import Cookies from 'js-cookie'
 export default {
   name: 'Detail',
   components: {
@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      activeName: Cookie.get('activeName') || 'first',
+      activeName: Cookies.get('activeName') || 'first',
       accountInfo: {},
       rules: {
         username: [
@@ -69,7 +69,7 @@ export default {
       }
     },
     tabClick() {
-      Cookie.set('activeName', this.activeName)
+      Cookies.set('activeName', this.activeName)
     }
   }
 }

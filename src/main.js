@@ -15,6 +15,8 @@ import '@/icons' // icon
 import '@/permission' // permission control
 // 全局引用
 import components from '@/components'
+import Print from 'vue-print-nb'
+Vue.use(Print)
 Vue.use(components)
 /**
  * If you don't want to use mock-server

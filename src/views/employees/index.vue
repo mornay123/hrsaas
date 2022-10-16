@@ -13,6 +13,11 @@
     <el-card>
       <el-table v-loading="loading" border :data="list">
         <el-table-column label="序号" sortable="" width="80" type="index" />
+        <el-table-column label="头像">
+          <template slot-scope="{row}">
+            <img :src="row.staffPhoto" alt="" width="100px" height="100px" @click="getQrCode(row)">
+          </template>
+        </el-table-column>
         <el-table-column label="姓名" prop="username" />
         <el-table-column label="工号" prop="workNumber" />
         <el-table-column label="聘用形式" prop="formOfEmployment" :formatter="formatEmployment" />
@@ -48,10 +53,18 @@
       </el-row>
     </el-card>
     <add-employee :dialog-visible.sync="dialogVisible" :hire-type="hireType" />
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisibleQr"
+      width="30%"
+    >
+      <canvas ref="canvas" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import QrCode from 'qrcode'
 import EmployeeEnum from '@/api/constant/employees'
 import PageTools from '@/components/pageTools'
 import { getEmployeeList, delEmployee } from '@/api/employees'
@@ -72,7 +85,8 @@ export default {
       total: 0, // 总数
       loading: false,
       hireType: EmployeeEnum.hireType,
-      dialogVisible: false
+      dialogVisible: false,
+      dialogVisibleQr: false
     }
   },
 
@@ -150,6 +164,16 @@ export default {
     },
     goDetail(row) {
       this.$router.push('/employees/detail/' + row.id)
+    },
+    getQrCode(row) {
+      if (!row.staffPhoto) return this.$message.error('暂无头像')
+      this.dialogVisibleQr = true
+      this.$nextTick(() => {
+        QrCode.toCanvas(this.$refs.canvas, row.staffPhoto, function(error) {
+          if (error) console.error(error)
+          console.log('success!')
+        })
+      })
     }
   }
 }
